@@ -1,10 +1,407 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eth-encrypted-diary</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a10;
+            color: #c0c0cc;
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #login {
+            width: 380px;
+            padding: 40px 32px;
+            background: #121218;
+            border: 1px solid #2a2a3a;
+            border-radius: 12px;
+        }
+
+        #login h1 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #e0e0e8;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #login h1 .icon {
+            color: #7F77DD;
+        }
+
+        #login .sub {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        .step {
+            margin-bottom: 20px;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .step-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1e1e2a;
+            color: #7F77DD;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-num.done {
+            background: #534AB7;
+            color: #fff;
+        }
+
+        #btn-connect {
+            width: 100%;
+            padding: 12px;
+            background: #1e1e2a;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            color: #c0c0cc;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        #btn-connect:hover {
+            background: #24243a;
+            border-color: #534AB7;
+        }
+
+        #btn-connect.connected {
+            border-color: #534AB7;
+            background: #1a1a26;
+            cursor: default;
+        }
+
+        #wallet-info {
+            font-size: 12px;
+            color: #5DCAA5;
+            margin-top: 6px;
+            display: none;
+        }
+
+        #password-section {
+            display: none;
+        }
+
+        #password-input {
+            width: 100%;
+            padding: 12px;
+            background: #1e1e2a;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            color: #e0e0e8;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #password-input:focus {
+            border-color: #534AB7;
+        }
+
+        #btn-unlock {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: #534AB7;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #btn-unlock:hover {
+            background: #7F77DD;
+        }
+
+        #btn-unlock:disabled {
+            background: #2a2a3a;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        #status {
+            font-size: 12px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        #status.ok {
+            color: #5DCAA5;
+            display: block;
+        }
+
+        #status.err {
+            color: #E24B4A;
+            display: block;
+        }
+
+        #app {
+            display: none;
+            width: 100%;
+            height: 100vh;
+        }
+
+        #app-header {
+            padding: 14px 20px;
+            background: #121218;
+            border-bottom: 1px solid #2a2a3a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #app-header .title {
+            font-size: 15px;
+            font-weight: 500;
+            color: #e0e0e8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #app-header .title .icon {
+            color: #7F77DD;
+        }
+
+        #app-header .meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-addr {
+            color: #888;
+            background: #1e1e2a;
+        }
+
+        .badge-net {
+            color: #5DCAA5;
+            background: #0a1f18;
+        }
+
+        #app-body {
+            display: flex;
+            height: calc(100vh - 50px);
+        }
+
+        #sidebar {
+            width: 260px;
+            border-right: 1px solid #2a2a3a;
+            background: #121218;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        #main {
+            flex: 1;
+            background: #0e0e16;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #main .empty {
+            color: #444;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-OK
+
+<div id="login">
+    <h1><span class="icon">&#9670;</span> eth-encrypted-diary</h1>
+    <p class="sub">暗号化ブロックチェーン日記</p>
+
+    <div class="step">
+        <div class="step-label">
+            <span class="step-num" id="step1-num">1</span>
+            ウォレット接続
+        </div>
+        <button id="btn-connect" onclick="connectWallet()">MetaMaskに接続</button>
+        <div id="wallet-info"></div>
+    </div>
+
+    <div id="password-section" class="step">
+        <div class="step-label">
+            <span class="step-num" id="step2-num">2</span>
+            パスワード入力
+        </div>
+        <input type="password" id="password-input" placeholder="暗号化パスワード">
+        <button id="btn-unlock" onclick="deriveKey()" disabled>鍵を導出してログイン</button>
+    </div>
+
+    <div id="status"></div>
+</div>
+
+<div id="app">
+    <div id="app-header">
+        <div class="title"><span class="icon">&#9670;</span> eth-encrypted-diary</div>
+        <div class="meta">
+            <span class="badge badge-addr" id="app-addr"></span>
+            <span class="badge badge-net" id="app-net"></span>
+        </div>
+    </div>
+    <div id="app-body">
+        <div id="sidebar">
+        </div>
+        <div id="main">
+            <div class="empty">鍵の導出に成功しました</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.2/ethers.umd.min.js"></script>
+<script>
+    let walletAddress = null;
+    let aesKey = null;
+    let provider = null;
+    let signer = null;
+
+    async function connectWallet() {
+        if (!window.ethereum) {
+            showStatus('MetaMaskがインストールされていません', 'err');
+            return;
+        }
+
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            walletAddress = accounts[0];
+
+            provider = new ethers.BrowserProvider(window.ethereum);
+            signer = await provider.getSigner();
+
+            const network = await provider.getNetwork();
+
+            document.getElementById('btn-connect').textContent = shortenAddr(walletAddress);
+            document.getElementById('btn-connect').classList.add('connected');
+            document.getElementById('wallet-info').textContent = 'Chain ID: ' + network.chainId.toString();
+            document.getElementById('wallet-info').style.display = 'block';
+            document.getElementById('step1-num').classList.add('done');
+            document.getElementById('step1-num').textContent = '✓';
+
+            document.getElementById('password-section').style.display = 'block';
+            document.getElementById('password-input').focus();
+            document.getElementById('password-input').addEventListener('input', function() {
+                document.getElementById('btn-unlock').disabled = this.value.length === 0;
+            });
+            document.getElementById('password-input').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && this.value.length > 0) deriveKey();
+            });
+
+            window.ethereum.on('accountsChanged', function(accounts) {
+                location.reload();
+            });
+            window.ethereum.on('chainChanged', function() {
+                location.reload();
+            });
+
+        } catch (err) {
+            showStatus('接続がキャンセルされました', 'err');
+        }
+    }
+
+    async function deriveKey() {
+        const password = document.getElementById('password-input').value;
+        if (!password || !walletAddress) return;
+
+        document.getElementById('btn-unlock').disabled = true;
+        document.getElementById('btn-unlock').textContent = '導出中...';
+
+        try {
+            const enc = new TextEncoder();
+            const salt = enc.encode(walletAddress.toLowerCase());
+            const keyMaterial = await crypto.subtle.importKey(
+                'raw',
+                enc.encode(password),
+                'PBKDF2',
+                false,
+                ['deriveKey']
+            );
+
+            aesKey = await crypto.subtle.deriveKey(
+                {
+                    name: 'PBKDF2',
+                    salt: salt,
+                    iterations: 600000,
+                    hash: 'SHA-256'
+                },
+                keyMaterial,
+                { name: 'AES-GCM', length: 256 },
+                false,
+                ['encrypt', 'decrypt']
+            );
+
+            document.getElementById('step2-num').classList.add('done');
+            document.getElementById('step2-num').textContent = '✓';
+            showStatus('鍵の導出に成功しました', 'ok');
+
+            setTimeout(enterApp, 600);
+
+        } catch (err) {
+            showStatus('鍵の導出に失敗しました: ' + err.message, 'err');
+            document.getElementById('btn-unlock').disabled = false;
+            document.getElementById('btn-unlock').textContent = '鍵を導出してログイン';
+        }
+    }
+
+    function enterApp() {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('app-addr').textContent = shortenAddr(walletAddress);
+
+        provider.getNetwork().then(function(net) {
+            const names = { '8453': 'Base', '84532': 'Base Sepolia', '1': 'Ethereum' };
+            document.getElementById('app-net').textContent = names[net.chainId.toString()] || 'Chain ' + net.chainId;
+        });
+    }
+
+    function shortenAddr(addr) {
+        return addr.slice(0, 6) + '...' + addr.slice(-4);
+    }
+
+    function showStatus(msg, type) {
+        const el = document.getElementById('status');
+        el.textContent = msg;
+        el.className = type;
+    }
+</script>
+
 </body>
 </html>
