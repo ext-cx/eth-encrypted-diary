@@ -969,7 +969,7 @@
         openModal(
             '詳細設定',
             '<button class="advanced-btn" onclick="showChangePasswordWarning()">' +
-            '<div><div>パスワード変更</div><div class="desc">全エントリを新しい鍵で再暗号化します</div></div>' +
+            '<div><div>オーナー変更</div><div class="desc">全エントリを新しい鍵で再暗号化します</div></div>' +
             '</button>' +
             '<button class="advanced-btn" onclick="showRebuildIndexWarning()">' +
             '<div><div>インデックス再構築</div><div class="desc">オンチェーンデータから一覧を再生成します</div></div>' +
@@ -980,13 +980,15 @@
 
     function showChangePasswordWarning() {
         openModal(
-            'パスワード変更',
-            '<span style="color:#E24B4A;">この操作は全エントリの再暗号化を行います。</span><br><br>' +
+            'オーナー変更',
+            '<span style="color:#E24B4A;">コントラクトの所有権を移譲し、全エントリを新しい鍵で再暗号化します。</span><br><br>' +
+            'ウォレットアドレスが同じ場合はパスワードのみ変更されます。<br>' +
             'エントリ数が多い場合、長時間かかる可能性があります。<br>処理中にブラウザを閉じないでください。<br><br>' +
-            '<input type="password" id="new-password" placeholder="新しいパスワード">' +
+            '<input type="text" id="new-owner-address" placeholder="新しいウォレットアドレス" value="' + walletAddress + '">' +
+            '<input type="password" id="new-password" placeholder="新しいパスワード" style="margin-top:8px;">' +
             '<input type="password" id="new-password-confirm" placeholder="新しいパスワード（確認）" style="margin-top:8px;">',
             '<button class="modal-btn modal-btn-cancel" onclick="showAdvancedPanel()">戻る</button>' +
-            '<button class="modal-btn modal-btn-danger" onclick="executeChangePassword()">変更を実行</button>'
+            '<button class="modal-btn modal-btn-danger" onclick="executeChangeOwner()">変更を実行</button>'
         );
     }
 
@@ -1001,19 +1003,24 @@
         );
     }
 
-    async function executeChangePassword() {
+    async function executeChangeOwner() {
+        const newAddr = document.getElementById('new-owner-address').value.trim();
         const newPw = document.getElementById('new-password').value;
         const newPwConfirm = document.getElementById('new-password-confirm').value;
 
+        if (!newAddr) { alert('ウォレットアドレスを入力してください'); return; }
+        if (!ethers.isAddress(newAddr)) { alert('無効なウォレットアドレスです'); return; }
         if (!newPw) { alert('新しいパスワードを入力してください'); return; }
         if (newPw !== newPwConfirm) { alert('パスワードが一致しません'); return; }
+
+        const isOwnerChange = newAddr.toLowerCase() !== walletAddress.toLowerCase();
 
         closeModalDirect();
         showLoading('新しい鍵を導出中...');
 
         try {
             const enc = new TextEncoder();
-            const salt = enc.encode(walletAddress.toLowerCase());
+            const salt = enc.encode(newAddr.toLowerCase());
             const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(newPw), 'PBKDF2', false, ['deriveKey']);
             const newKey = await crypto.subtle.deriveKey(
                 { name: 'PBKDF2', salt: salt, iterations: 600000, hash: 'SHA-256' },
@@ -1090,17 +1097,28 @@
             const newIndexCid = await uploadToPinata(encIdxBlob, 'index.enc', tempJwt);
 
             showLoading('ブロックチェーンを更新中...');
-            const tx = await contract.update_index(newIndexCid);
-            await tx.wait();
+            const tx1 = await contract.update_index(newIndexCid);
+            await tx1.wait();
+
+            if (isOwnerChange) {
+                showLoading('オーナーを移譲中...');
+                const tx2 = await contract.transfer_ownership(newAddr);
+                await tx2.wait();
+            }
 
             hideLoading();
             renderEntryList();
-            alert('パスワード変更が完了しました。次回から新しいパスワードでログインしてください。');
+
+            if (isOwnerChange) {
+                alert('オーナー変更が完了しました。新しいウォレット（' + newAddr.slice(0, 6) + '...' + newAddr.slice(-4) + '）と新しいパスワードで再ログインしてください。');
+            } else {
+                alert('パスワード変更が完了しました。次回から新しいパスワードでログインしてください。');
+            }
 
         } catch (err) {
             hideLoading();
-            console.error('Password change error:', err);
-            alert('パスワード変更に失敗しました: ' + err.message);
+            console.error('Owner change error:', err);
+            alert('オーナー変更に失敗しました: ' + err.message);
         }
     }
 
