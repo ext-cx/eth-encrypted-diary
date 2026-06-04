@@ -1,11 +1,5 @@
 import { ethers } from 'ethers';
 
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};
-
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', 'https://ext-cx.github.io');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -40,24 +34,28 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Invalid signature' });
     }
 
-    const chunks = [];
-    for await (const chunk of req) {
-        chunks.push(chunk);
-    }
-    const body = Buffer.concat(chunks);
-
     try {
-        const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
+        const response = await fetch('https://api.pinata.cloud/users/generateApiKey', {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + process.env.PINATA_JWT,
-                'Content-Type': req.headers['content-type'],
+                'Content-Type': 'application/json',
             },
-            body: body,
+            body: JSON.stringify({
+                keyName: 'upload-' + Date.now(),
+                maxUses: 3,
+                permissions: {
+                    endpoints: {
+                        pinning: {
+                            pinFileToIPFS: true
+                        }
+                    }
+                }
+            }),
         });
 
         const data = await response.json();
-        return res.status(response.status).json(data);
+        return res.status(response.status).json({ jwt: data.JWT });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }

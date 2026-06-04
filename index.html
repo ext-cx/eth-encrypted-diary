@@ -173,7 +173,7 @@
             overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
         }
 
-        .entry-item .attach-icon { font-size: 11px; color: #7F77DD; margin-right: 4px; }
+        .entry-item .attach-icon { font-size: 13px; color: #c0c0cc; margin-right: 2px; }
 
         #main {
             flex: 1; background: #0e0e16;
@@ -493,18 +493,36 @@
         return decrypted;
     }
 
-    async function uploadToPinata(blob, filename) {
+    async function getTempJwt() {
         const message = Date.now().toString();
         const signature = await signer.signMessage(message);
-
-        const formData = new FormData();
-        formData.append('file', new Blob([blob]), filename);
 
         const res = await fetch(CONFIG.apiUrl, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Signature': signature,
                 'X-Message': message,
+            },
+        });
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || 'Failed to get upload token');
+        }
+
+        const data = await res.json();
+        return data.jwt;
+    }
+
+    async function uploadToPinata(blob, filename, tempJwt) {
+        const formData = new FormData();
+        formData.append('file', new Blob([blob]), filename);
+
+        const res = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + tempJwt,
             },
             body: formData,
         });
@@ -557,17 +575,17 @@
             diaryIndex = [];
             passwordVerified = false;
             renderEntryList();
-            document.getElementById('main-empty').innerHTML = '<div style="color:#E24B4A;text-align:center;">パスワードが間違っている可能性があります<br><span style="font-size:12px;color:#aeb0c0;">日記が存在しますが復号できませんでした。<br>正しいパスワードで再ログインしてください。</span></div>';
+            document.getElementById('main-empty').innerHTML = '<div style="color:#E24B4A;text-align:center;">復号に失敗しました<br><span style="font-size:12px;color:#aeb0c0;">パスワードまたはウォレットアドレスが<br>異なっている可能性があります。<br>正しい組み合わせで再ログインしてください。</span></div>';
             document.getElementById('btn-new').disabled = true;
             document.getElementById('btn-new').style.opacity = '0.4';
             document.getElementById('btn-new').style.cursor = 'not-allowed';
         }
     }
 
-    async function saveIndex() {
+    async function saveIndex(tempJwt) {
         const json = JSON.stringify(diaryIndex);
         const encrypted = await encrypt(new TextEncoder().encode(json));
-        const cid = await uploadToPinata(encrypted, 'index.enc');
+        const cid = await uploadToPinata(encrypted, 'index.enc', tempJwt);
         return cid;
     }
 
@@ -656,6 +674,9 @@
         showLoading('暗号化中...');
 
         try {
+            showLoading('アップロード認証中...');
+            const tempJwt = await getTempJwt();
+
             let attachmentCid = null;
             let attachmentInfo = null;
 
@@ -665,7 +686,7 @@
                 const encryptedFile = await encrypt(new Uint8Array(fileBuffer));
 
                 showLoading('添付ファイルをアップロード中...');
-                attachmentCid = await uploadToPinata(encryptedFile, 'attach.enc');
+                attachmentCid = await uploadToPinata(encryptedFile, 'attach.enc', tempJwt);
                 attachmentInfo = {
                     cid: attachmentCid,
                     name: file.name,
@@ -683,7 +704,7 @@
             const encryptedEntry = await encrypt(new TextEncoder().encode(metadataJson));
 
             showLoading('日記をアップロード中...');
-            const entryCid = await uploadToPinata(encryptedEntry, 'entry.enc');
+            const entryCid = await uploadToPinata(encryptedEntry, 'entry.enc', tempJwt);
 
             showLoading('インデックスを更新中...');
             const now = new Date();
@@ -700,7 +721,7 @@
                 deleted: false
             });
 
-            const indexCid = await saveIndex();
+            const indexCid = await saveIndex(tempJwt);
 
             showLoading('ブロックチェーンに記録中...');
             const tx = await contract.post(entryCid, entryType, indexCid);
@@ -770,10 +791,11 @@
 
         showLoading('削除中...');
         try {
+            const tempJwt = await getTempJwt();
             const entry = diaryIndex.find(e => e.id === currentEntryId);
             if (entry) entry.deleted = true;
 
-            const indexCid = await saveIndex();
+            const indexCid = await saveIndex(tempJwt);
             const tx = await contract.delete_entries([currentEntryId], indexCid);
             await tx.wait();
 
