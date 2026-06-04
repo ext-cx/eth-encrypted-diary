@@ -681,6 +681,9 @@
             document.getElementById('btn-new').disabled = true;
             document.getElementById('btn-new').style.opacity = '0.4';
             document.getElementById('btn-new').style.cursor = 'not-allowed';
+            document.getElementById('btn-advanced').disabled = true;
+            document.getElementById('btn-advanced').style.opacity = '0.4';
+            document.getElementById('btn-advanced').style.cursor = 'not-allowed';
         }
     }
 
@@ -798,8 +801,12 @@
             }
 
             showLoading('日記を暗号化中...');
+            const now = new Date();
+            const days = ['日', '月', '火', '水', '木', '金', '土'];
+            const dateStr = now.getFullYear() + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' (' + days[now.getDay()] + ')';
             const metadata = {
                 text: text,
+                date: dateStr,
                 attachments: attachmentInfo ? [attachmentInfo] : []
             };
             const metadataJson = JSON.stringify(metadata);
@@ -809,9 +816,6 @@
             const entryCid = await uploadToPinata(encryptedEntry, 'entry.enc', tempJwt);
 
             showLoading('インデックスを更新中...');
-            const now = new Date();
-            const days = ['日', '月', '火', '水', '木', '金', '土'];
-            const dateStr = now.getFullYear() + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' (' + days[now.getDay()] + ')';
             const entryCount = Number(await contract.entry_count());
 
             diaryIndex.push({
@@ -1071,7 +1075,7 @@
                 const oldIndexEntry = diaryIndex.find(e => e.id === i);
                 newIndex.push({
                     id: i,
-                    date: oldIndexEntry ? oldIndexEntry.date : 'unknown',
+                    date: metadata.date || (oldIndexEntry ? oldIndexEntry.date : '(日付不明)'),
                     preview: metadata.text.substring(0, 50),
                     cid: newEntryCid,
                     entry_type: oldIndexEntry ? oldIndexEntry.entry_type : 0,
@@ -1143,11 +1147,13 @@
 
                 let preview = '(復号失敗)';
                 let entryType = 0;
+                let entryDate = '(日付不明)';
                 try {
                     const encBlob = await fetchFromIPFS(cid);
                     const decrypted = await decrypt(encBlob);
                     const metadata = JSON.parse(new TextDecoder().decode(decrypted));
                     preview = metadata.text.substring(0, 50);
+                    entryDate = metadata.date || '(日付不明)';
                     entryType = metadata.attachments && metadata.attachments.length > 0 ? 1 : 0;
                 } catch (e) {
                     console.error('Entry ' + i + ' decrypt failed:', e);
@@ -1155,7 +1161,7 @@
 
                 newIndex.push({
                     id: i,
-                    date: 'unknown',
+                    date: entryDate,
                     preview: preview,
                     cid: cid,
                     entry_type: entryType,
