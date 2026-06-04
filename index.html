@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>eth-encrypted-diary</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -582,7 +583,8 @@
         visible.forEach(entry => {
             const div = document.createElement('div');
             div.className = 'entry-item' + (entry.id === currentEntryId ? ' active' : '');
-            const typeIcon = entry.entry_type > 0 ? '<span class="attach-icon">\u{1F4CE}</span>' : '';
+            const typeIcons = { 1: '<i class="ti ti-photo"></i>', 2: '<i class="ti ti-volume"></i>', 3: '<i class="ti ti-video"></i>' };
+            const typeIcon = entry.entry_type > 0 ? '<span class="attach-icon">' + (typeIcons[entry.entry_type] || '<i class="ti ti-paperclip"></i>') + '</span>' : '';
             div.innerHTML = '<div class="date">' + entry.date + '</div><div class="preview">' + typeIcon + escapeHtml(entry.preview) + '</div>';
             div.onclick = () => viewEntry(entry.id);
             list.appendChild(div);
