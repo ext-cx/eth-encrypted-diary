@@ -35,9 +35,7 @@
             gap: 8px;
         }
 
-        #login h1 .icon {
-            color: #7F77DD;
-        }
+        #login h1 .icon { color: #7F77DD; }
 
         #login .sub {
             font-size: 13px;
@@ -45,9 +43,7 @@
             margin-bottom: 28px;
         }
 
-        .step {
-            margin-bottom: 20px;
-        }
+        .step { margin-bottom: 20px; }
 
         .step-label {
             font-size: 12px;
@@ -59,188 +55,251 @@
         }
 
         .step-num {
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border-radius: 50%;
             background: #1e1e2a;
             color: #7F77DD;
             font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .step-num.done {
-            background: #534AB7;
-            color: #fff;
-        }
+        .step-num.done { background: #534AB7; color: #fff; }
 
         #btn-connect {
-            width: 100%;
-            padding: 12px;
-            background: #1e1e2a;
-            border: 1px solid #2a2a3a;
-            border-radius: 8px;
-            color: #c0c0cc;
-            font-size: 14px;
-            cursor: pointer;
+            width: 100%; padding: 12px;
+            background: #1e1e2a; border: 1px solid #2a2a3a; border-radius: 8px;
+            color: #c0c0cc; font-size: 14px; cursor: pointer;
             transition: background 0.2s, border-color 0.2s;
         }
 
-        #btn-connect:hover {
-            background: #24243a;
-            border-color: #534AB7;
-        }
+        #btn-connect:hover { background: #24243a; border-color: #534AB7; }
+        #btn-connect.connected { border-color: #534AB7; background: #1a1a26; cursor: default; }
 
-        #btn-connect.connected {
-            border-color: #534AB7;
-            background: #1a1a26;
-            cursor: default;
-        }
-
-        #wallet-info {
-            font-size: 12px;
-            color: #5DCAA5;
-            margin-top: 6px;
-            display: none;
-        }
-
-        #password-section {
-            display: none;
-        }
+        #wallet-info { font-size: 12px; color: #5DCAA5; margin-top: 6px; display: none; }
+        #password-section { display: none; }
 
         #password-input {
-            width: 100%;
-            padding: 12px;
-            background: #1e1e2a;
-            border: 1px solid #2a2a3a;
-            border-radius: 8px;
-            color: #e0e0e8;
-            font-size: 14px;
-            outline: none;
+            width: 100%; padding: 12px;
+            background: #1e1e2a; border: 1px solid #2a2a3a; border-radius: 8px;
+            color: #e0e0e8; font-size: 14px; outline: none;
             transition: border-color 0.2s;
         }
 
-        #password-input:focus {
-            border-color: #534AB7;
-        }
+        #password-input:focus { border-color: #534AB7; }
 
         #btn-unlock {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background: #534AB7;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
+            width: 100%; padding: 12px; margin-top: 10px;
+            background: #534AB7; border: none; border-radius: 8px;
+            color: #fff; font-size: 14px; font-weight: 500; cursor: pointer;
             transition: background 0.2s;
         }
 
-        #btn-unlock:hover {
-            background: #7F77DD;
-        }
+        #btn-unlock:hover { background: #7F77DD; }
+        #btn-unlock:disabled { background: #2a2a3a; color: #8888aa; cursor: not-allowed; }
 
-        #btn-unlock:disabled {
-            background: #2a2a3a;
-            color: #8888aa;
-            cursor: not-allowed;
-        }
+        #status { font-size: 12px; margin-top: 12px; display: none; }
+        #status.ok { color: #5DCAA5; display: block; }
+        #status.err { color: #E24B4A; display: block; }
 
-        #status {
-            font-size: 12px;
-            margin-top: 12px;
-            display: none;
-        }
-
-        #status.ok {
-            color: #5DCAA5;
-            display: block;
-        }
-
-        #status.err {
-            color: #E24B4A;
-            display: block;
-        }
-
-        #app {
-            display: none;
-            width: 100%;
-            height: 100vh;
-        }
+        #app { display: none; width: 100%; height: 100vh; flex-direction: column; }
 
         #app-header {
             padding: 14px 20px;
             background: #121218;
             border-bottom: 1px solid #2a2a3a;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-shrink: 0;
         }
 
         #app-header .title {
-            font-size: 15px;
-            font-weight: 500;
-            color: #e0e0e8;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 15px; font-weight: 500; color: #e0e0e8;
+            display: flex; align-items: center; gap: 8px;
         }
 
-        #app-header .title .icon {
-            color: #7F77DD;
-        }
+        #app-header .title .icon { color: #7F77DD; }
 
-        #app-header .meta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        #app-header .meta { display: flex; align-items: center; gap: 10px; }
 
-        .badge {
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
+        .badge { font-size: 12px; padding: 4px 10px; border-radius: 20px; }
+        .badge-addr { color: #aeb0c0; background: #1e1e2a; }
+        .badge-net { color: #5DCAA5; background: #0a1f18; }
 
-        .badge-addr {
-            color: #aeb0c0;
-            background: #1e1e2a;
-        }
-
-        .badge-net {
-            color: #5DCAA5;
-            background: #0a1f18;
-        }
-
-        #app-body {
-            display: flex;
-            height: calc(100vh - 50px);
-        }
+        #app-body { display: flex; flex: 1; overflow: hidden; }
 
         #sidebar {
             width: 260px;
             border-right: 1px solid #2a2a3a;
             background: #121218;
-            padding: 12px;
-            overflow-y: auto;
+            display: flex; flex-direction: column;
+            overflow: hidden;
         }
+
+        #sidebar-header {
+            padding: 12px;
+            border-bottom: 1px solid #2a2a3a;
+        }
+
+        #btn-new {
+            width: 100%; padding: 10px;
+            background: #534AB7; border: none; border-radius: 8px;
+            color: #fff; font-size: 13px; font-weight: 500; cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #btn-new:hover { background: #7F77DD; }
+
+        #entry-list {
+            flex: 1; overflow-y: auto; padding: 8px;
+        }
+
+        .entry-item {
+            padding: 10px 12px;
+            background: #1a1a26;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .entry-item:hover { background: #20202e; }
+        .entry-item.active { background: #24243a; border-color: #534AB7; }
+
+        .entry-item .date { font-size: 12px; color: #aeb0c0; }
+        .entry-item .preview {
+            font-size: 12px; color: #888;
+            margin-top: 4px;
+            overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+        }
+
+        .entry-item .attach-icon { font-size: 11px; color: #7F77DD; margin-right: 4px; }
 
         #main {
-            flex: 1;
-            background: #0e0e16;
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex: 1; background: #0e0e16;
+            display: flex; flex-direction: column;
+            overflow: hidden;
         }
 
-        #main .empty {
-            color: #8888aa;
-            font-size: 14px;
+        #main-empty {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            color: #8888aa; font-size: 14px;
         }
+
+        #entry-view {
+            flex: 1; padding: 24px; overflow-y: auto; display: none;
+        }
+
+        #entry-view .entry-date { font-size: 12px; color: #aeb0c0; margin-bottom: 12px; }
+        #entry-view .entry-text { font-size: 14px; color: #d0d0dc; line-height: 1.8; }
+        #entry-view .entry-attachment {
+            margin-top: 16px; padding-top: 16px;
+            border-top: 1px solid #2a2a3a;
+        }
+        #entry-view .entry-attachment img { max-width: 100%; border-radius: 8px; }
+        #entry-view .entry-actions {
+            margin-top: 20px; padding-top: 16px;
+            border-top: 1px solid #2a2a3a;
+            display: flex; gap: 8px;
+        }
+
+        .btn-action {
+            font-size: 12px; padding: 6px 14px;
+            background: #1e1e2a; border: 1px solid #2a2a3a; border-radius: 6px;
+            color: #aeb0c0; cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover { background: #24243a; }
+        .btn-action.danger:hover { background: #3a1a1a; border-color: #E24B4A; color: #E24B4A; }
+
+        #compose {
+            display: none; flex-direction: column;
+            flex: 1; padding: 24px; overflow-y: auto;
+        }
+
+        #compose-title {
+            font-size: 14px; font-weight: 500; color: #e0e0e8;
+            margin-bottom: 16px;
+        }
+
+        #compose-text {
+            width: 100%; min-height: 200px; padding: 14px;
+            background: #1a1a26; border: 1px solid #2a2a3a; border-radius: 8px;
+            color: #e0e0e8; font-size: 14px; font-family: inherit;
+            line-height: 1.8; resize: vertical; outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #compose-text:focus { border-color: #534AB7; }
+
+        #compose-file-section {
+            margin-top: 12px;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        #compose-file {
+            display: none;
+        }
+
+        #btn-attach {
+            font-size: 13px; padding: 8px 14px;
+            background: #1e1e2a; border: 1px solid #2a2a3a; border-radius: 8px;
+            color: #aeb0c0; cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #btn-attach:hover { background: #24243a; }
+
+        #file-name { font-size: 12px; color: #aeb0c0; }
+
+        #compose-actions {
+            margin-top: 16px;
+            display: flex; gap: 10px;
+        }
+
+        #btn-save {
+            padding: 10px 24px;
+            background: #534AB7; border: none; border-radius: 8px;
+            color: #fff; font-size: 13px; font-weight: 500; cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #btn-save:hover { background: #7F77DD; }
+        #btn-save:disabled { background: #2a2a3a; color: #8888aa; cursor: not-allowed; }
+
+        #btn-cancel {
+            padding: 10px 24px;
+            background: transparent; border: 1px solid #2a2a3a; border-radius: 8px;
+            color: #aeb0c0; font-size: 13px; cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #btn-cancel:hover { background: #1e1e2a; }
+
+        #save-status {
+            font-size: 12px; margin-top: 10px;
+            color: #aeb0c0;
+        }
+
+        #loading-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10,10,16,0.8);
+            z-index: 100;
+            align-items: center; justify-content: center;
+            flex-direction: column; gap: 12px;
+            color: #aeb0c0; font-size: 14px;
+        }
+
+        #loading-overlay .spinner {
+            width: 32px; height: 32px;
+            border: 3px solid #2a2a3a;
+            border-top-color: #7F77DD;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -248,25 +307,16 @@
 <div id="login">
     <h1><span class="icon">&#9670;</span> eth-encrypted-diary</h1>
     <p class="sub">暗号化ブロックチェーン日記</p>
-
     <div class="step">
-        <div class="step-label">
-            <span class="step-num" id="step1-num">1</span>
-            ウォレット接続
-        </div>
+        <div class="step-label"><span class="step-num" id="step1-num">1</span> ウォレット接続</div>
         <button id="btn-connect" onclick="connectWallet()">MetaMaskに接続</button>
         <div id="wallet-info"></div>
     </div>
-
     <div id="password-section" class="step">
-        <div class="step-label">
-            <span class="step-num" id="step2-num">2</span>
-            パスワード入力
-        </div>
+        <div class="step-label"><span class="step-num" id="step2-num">2</span> パスワード入力</div>
         <input type="password" id="password-input" placeholder="暗号化パスワード">
         <button id="btn-unlock" onclick="deriveKey()" disabled>鍵を導出してログイン</button>
     </div>
-
     <div id="status"></div>
 </div>
 
@@ -280,33 +330,81 @@
     </div>
     <div id="app-body">
         <div id="sidebar">
+            <div id="sidebar-header">
+                <button id="btn-new" onclick="showCompose()">+ 新しい日記</button>
+            </div>
+            <div id="entry-list"></div>
         </div>
         <div id="main">
-            <div class="empty">鍵の導出に成功しました</div>
+            <div id="main-empty">日記を選択するか、新しく書いてください</div>
+            <div id="entry-view">
+                <div class="entry-date" id="view-date"></div>
+                <div class="entry-text" id="view-text"></div>
+                <div class="entry-attachment" id="view-attachment"></div>
+                <div class="entry-actions">
+                    <button class="btn-action danger" onclick="deleteEntry()">削除</button>
+                </div>
+            </div>
+            <div id="compose">
+                <div id="compose-title">新しい日記</div>
+                <textarea id="compose-text" placeholder="今日のできごとを書く..."></textarea>
+                <div id="compose-file-section">
+                    <button id="btn-attach" onclick="document.getElementById('compose-file').click()">添付ファイル</button>
+                    <input type="file" id="compose-file" accept="image/*,audio/*,video/*" onchange="onFileSelect(this)">
+                    <span id="file-name"></span>
+                </div>
+                <div id="compose-actions">
+                    <button id="btn-save" onclick="saveEntry()">保存</button>
+                    <button id="btn-cancel" onclick="hideCompose()">キャンセル</button>
+                </div>
+                <div id="save-status"></div>
+            </div>
         </div>
     </div>
 </div>
 
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div id="loading-text">処理中...</div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.13.2/ethers.umd.min.js"></script>
 <script>
+    const CONFIG = {
+        contractAddress: '0xBC67C8618c1d5094E40019e12d50e49D03DC932f',
+        apiUrl: 'https://eth-encrypted-diary.vercel.app/api/pin',
+        gatewayUrl: 'https://gateway.pinata.cloud/ipfs/',
+        chainId: 84532
+    };
+
+    const ABI = [
+        "function post(string cid, uint8 entry_type, string new_index_cid) external",
+        "function delete_entries(uint256[] ids, string new_index_cid) external",
+        "function restore_entries(uint256[] ids, string new_index_cid) external",
+        "function update_index(string new_index_cid) external",
+        "function get_entries(uint256 from, uint256 to) external view returns (string[], bool[])",
+        "function owner() external view returns (address)",
+        "function entry_count() external view returns (uint256)",
+        "function index_cid() external view returns (string)",
+        "function entries(uint256) external view returns (string)",
+        "function deleted(uint256) external view returns (bool)"
+    ];
+
     let walletAddress = null;
     let aesKey = null;
     let provider = null;
     let signer = null;
+    let contract = null;
+    let diaryIndex = [];
+    let currentEntryId = null;
 
     async function connectWallet() {
-        if (!window.ethereum) {
-            showStatus('MetaMaskがインストールされていません', 'err');
-            return;
-        }
-
+        if (!window.ethereum) { showStatus('MetaMaskがインストールされていません', 'err'); return; }
         try {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             walletAddress = accounts[0];
-
             provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
-
             const network = await provider.getNetwork();
 
             document.getElementById('btn-connect').textContent = shortenAddr(walletAddress);
@@ -314,8 +412,7 @@
             document.getElementById('wallet-info').textContent = 'Chain ID: ' + network.chainId.toString();
             document.getElementById('wallet-info').style.display = 'block';
             document.getElementById('step1-num').classList.add('done');
-            document.getElementById('step1-num').textContent = '✓';
-
+            document.getElementById('step1-num').textContent = '\u2713';
             document.getElementById('password-section').style.display = 'block';
             document.getElementById('password-input').focus();
             document.getElementById('password-input').addEventListener('input', function() {
@@ -324,14 +421,8 @@
             document.getElementById('password-input').addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && this.value.length > 0) deriveKey();
             });
-
-            window.ethereum.on('accountsChanged', function(accounts) {
-                location.reload();
-            });
-            window.ethereum.on('chainChanged', function() {
-                location.reload();
-            });
-
+            window.ethereum.on('accountsChanged', function() { location.reload(); });
+            window.ethereum.on('chainChanged', function() { location.reload(); });
         } catch (err) {
             showStatus('接続がキャンセルされました', 'err');
         }
@@ -340,40 +431,23 @@
     async function deriveKey() {
         const password = document.getElementById('password-input').value;
         if (!password || !walletAddress) return;
-
         document.getElementById('btn-unlock').disabled = true;
         document.getElementById('btn-unlock').textContent = '導出中...';
-
         try {
             const enc = new TextEncoder();
             const salt = enc.encode(walletAddress.toLowerCase());
-            const keyMaterial = await crypto.subtle.importKey(
-                'raw',
-                enc.encode(password),
-                'PBKDF2',
-                false,
-                ['deriveKey']
-            );
-
+            const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
             aesKey = await crypto.subtle.deriveKey(
-                {
-                    name: 'PBKDF2',
-                    salt: salt,
-                    iterations: 600000,
-                    hash: 'SHA-256'
-                },
+                { name: 'PBKDF2', salt: salt, iterations: 600000, hash: 'SHA-256' },
                 keyMaterial,
                 { name: 'AES-GCM', length: 256 },
                 false,
                 ['encrypt', 'decrypt']
             );
-
             document.getElementById('step2-num').classList.add('done');
-            document.getElementById('step2-num').textContent = '✓';
+            document.getElementById('step2-num').textContent = '\u2713';
             showStatus('鍵の導出に成功しました', 'ok');
-
             setTimeout(enterApp, 600);
-
         } catch (err) {
             showStatus('鍵の導出に失敗しました: ' + err.message, 'err');
             document.getElementById('btn-unlock').disabled = false;
@@ -381,15 +455,298 @@
         }
     }
 
-    function enterApp() {
+    async function enterApp() {
         document.getElementById('login').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
+        document.getElementById('app').style.display = 'flex';
         document.getElementById('app-addr').textContent = shortenAddr(walletAddress);
 
-        provider.getNetwork().then(function(net) {
-            const names = { '8453': 'Base', '84532': 'Base Sepolia', '1': 'Ethereum' };
-            document.getElementById('app-net').textContent = names[net.chainId.toString()] || 'Chain ' + net.chainId;
+        const net = await provider.getNetwork();
+        const names = { '8453': 'Base', '84532': 'Base Sepolia', '1': 'Ethereum' };
+        document.getElementById('app-net').textContent = names[net.chainId.toString()] || 'Chain ' + net.chainId;
+
+        contract = new ethers.Contract(CONFIG.contractAddress, ABI, signer);
+        await loadIndex();
+    }
+
+    async function encrypt(data) {
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, aesKey, data);
+        const result = new Uint8Array(12 + encrypted.byteLength);
+        result.set(iv, 0);
+        result.set(new Uint8Array(encrypted), 12);
+        return result;
+    }
+
+    async function decrypt(blob) {
+        const data = new Uint8Array(blob);
+        const iv = data.slice(0, 12);
+        const ciphertext = data.slice(12);
+        const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, aesKey, ciphertext);
+        return decrypted;
+    }
+
+    async function uploadToPinata(blob, filename) {
+        const message = Date.now().toString();
+        const signature = await signer.signMessage(message);
+
+        const formData = new FormData();
+        formData.append('file', new Blob([blob]), filename);
+
+        const res = await fetch(CONFIG.apiUrl, {
+            method: 'POST',
+            headers: {
+                'X-Signature': signature,
+                'X-Message': message,
+            },
+            body: formData,
         });
+
+        if (!res.ok) {
+            const err = await res.json();
+            throw new Error(err.error || 'Upload failed');
+        }
+
+        const data = await res.json();
+        return data.IpfsHash;
+    }
+
+    async function fetchFromIPFS(cid) {
+        const res = await fetch(CONFIG.gatewayUrl + cid);
+        if (!res.ok) throw new Error('IPFS fetch failed: ' + res.status);
+        return await res.arrayBuffer();
+    }
+
+    function getEntryType(file) {
+        if (!file) return 0;
+        if (file.type.startsWith('image/')) return 1;
+        if (file.type.startsWith('audio/')) return 2;
+        if (file.type.startsWith('video/')) return 3;
+        return 1;
+    }
+
+    async function loadIndex() {
+        try {
+            const indexCid = await contract.index_cid();
+            if (!indexCid) {
+                diaryIndex = [];
+                renderEntryList();
+                return;
+            }
+            const encryptedBlob = await fetchFromIPFS(indexCid);
+            const decrypted = await decrypt(encryptedBlob);
+            const json = new TextDecoder().decode(decrypted);
+            diaryIndex = JSON.parse(json);
+            renderEntryList();
+        } catch (err) {
+            console.error('Index load error:', err);
+            diaryIndex = [];
+            renderEntryList();
+        }
+    }
+
+    async function saveIndex() {
+        const json = JSON.stringify(diaryIndex);
+        const encrypted = await encrypt(new TextEncoder().encode(json));
+        const cid = await uploadToPinata(encrypted, 'index.enc');
+        return cid;
+    }
+
+    function renderEntryList() {
+        const list = document.getElementById('entry-list');
+        list.innerHTML = '';
+        const visible = diaryIndex.filter(e => !e.deleted);
+        if (visible.length === 0) {
+            list.innerHTML = '<div style="padding:20px;text-align:center;color:#8888aa;font-size:13px;">まだ日記がありません</div>';
+            return;
+        }
+        visible.sort((a, b) => new Date(b.date) - new Date(a.date));
+        visible.forEach(entry => {
+            const div = document.createElement('div');
+            div.className = 'entry-item' + (entry.id === currentEntryId ? ' active' : '');
+            const typeIcon = entry.entry_type > 0 ? '<span class="attach-icon">\u{1F4CE}</span>' : '';
+            div.innerHTML = '<div class="date">' + entry.date + '</div><div class="preview">' + typeIcon + escapeHtml(entry.preview) + '</div>';
+            div.onclick = () => viewEntry(entry.id);
+            list.appendChild(div);
+        });
+    }
+
+    function showCompose() {
+        document.getElementById('main-empty').style.display = 'none';
+        document.getElementById('entry-view').style.display = 'none';
+        document.getElementById('compose').style.display = 'flex';
+        document.getElementById('compose-text').value = '';
+        document.getElementById('compose-file').value = '';
+        document.getElementById('file-name').textContent = '';
+        document.getElementById('save-status').textContent = '';
+        document.getElementById('compose-text').focus();
+    }
+
+    function hideCompose() {
+        document.getElementById('compose').style.display = 'none';
+        if (currentEntryId !== null) {
+            document.getElementById('entry-view').style.display = 'block';
+        } else {
+            document.getElementById('main-empty').style.display = 'flex';
+        }
+    }
+
+    function onFileSelect(input) {
+        if (input.files.length > 0) {
+            document.getElementById('file-name').textContent = input.files[0].name;
+        } else {
+            document.getElementById('file-name').textContent = '';
+        }
+    }
+
+    async function saveEntry() {
+        const text = document.getElementById('compose-text').value.trim();
+        if (!text) { document.getElementById('save-status').textContent = 'テキストを入力してください'; return; }
+
+        const fileInput = document.getElementById('compose-file');
+        const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
+        const entryType = getEntryType(file);
+
+        document.getElementById('btn-save').disabled = true;
+        showLoading('暗号化中...');
+
+        try {
+            let attachmentCid = null;
+            let attachmentInfo = null;
+
+            if (file) {
+                showLoading('添付ファイルを暗号化中...');
+                const fileBuffer = await file.arrayBuffer();
+                const encryptedFile = await encrypt(new Uint8Array(fileBuffer));
+
+                showLoading('添付ファイルをアップロード中...');
+                attachmentCid = await uploadToPinata(encryptedFile, 'attach.enc');
+                attachmentInfo = {
+                    cid: attachmentCid,
+                    name: file.name,
+                    mime: file.type,
+                    size: file.size
+                };
+            }
+
+            showLoading('日記を暗号化中...');
+            const metadata = {
+                text: text,
+                attachments: attachmentInfo ? [attachmentInfo] : []
+            };
+            const metadataJson = JSON.stringify(metadata);
+            const encryptedEntry = await encrypt(new TextEncoder().encode(metadataJson));
+
+            showLoading('日記をアップロード中...');
+            const entryCid = await uploadToPinata(encryptedEntry, 'entry.enc');
+
+            showLoading('インデックスを更新中...');
+            const now = new Date();
+            const dateStr = now.getFullYear() + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0');
+            const entryCount = Number(await contract.entry_count());
+
+            diaryIndex.push({
+                id: entryCount,
+                date: dateStr,
+                preview: text.substring(0, 50),
+                cid: entryCid,
+                entry_type: entryType,
+                deleted: false
+            });
+
+            const indexCid = await saveIndex();
+
+            showLoading('ブロックチェーンに記録中...');
+            const tx = await contract.post(entryCid, entryType, indexCid);
+            showLoading('トランザクション確定待ち...');
+            await tx.wait();
+
+            hideLoading();
+            hideCompose();
+            renderEntryList();
+            viewEntry(entryCount);
+
+        } catch (err) {
+            hideLoading();
+            console.error('Save error:', err);
+            document.getElementById('save-status').textContent = 'エラー: ' + err.message;
+        }
+
+        document.getElementById('btn-save').disabled = false;
+    }
+
+    async function viewEntry(id) {
+        currentEntryId = id;
+        const entry = diaryIndex.find(e => e.id === id);
+        if (!entry) return;
+
+        document.getElementById('main-empty').style.display = 'none';
+        document.getElementById('compose').style.display = 'none';
+        document.getElementById('entry-view').style.display = 'block';
+
+        document.getElementById('view-date').textContent = entry.date;
+        document.getElementById('view-text').textContent = '読み込み中...';
+        document.getElementById('view-attachment').innerHTML = '';
+        renderEntryList();
+
+        try {
+            const encryptedBlob = await fetchFromIPFS(entry.cid);
+            const decrypted = await decrypt(encryptedBlob);
+            const metadata = JSON.parse(new TextDecoder().decode(decrypted));
+
+            document.getElementById('view-text').textContent = metadata.text;
+
+            if (metadata.attachments && metadata.attachments.length > 0) {
+                const att = metadata.attachments[0];
+                const encAttachment = await fetchFromIPFS(att.cid);
+                const decAttachment = await decrypt(encAttachment);
+                const blob = new Blob([decAttachment], { type: att.mime });
+                const url = URL.createObjectURL(blob);
+
+                const container = document.getElementById('view-attachment');
+                if (att.mime.startsWith('image/')) {
+                    container.innerHTML = '<img src="' + url + '" alt="' + escapeHtml(att.name) + '">';
+                } else if (att.mime.startsWith('audio/')) {
+                    container.innerHTML = '<audio controls src="' + url + '"></audio>';
+                } else if (att.mime.startsWith('video/')) {
+                    container.innerHTML = '<video controls src="' + url + '" style="max-width:100%;border-radius:8px;"></video>';
+                }
+            }
+        } catch (err) {
+            console.error('View error:', err);
+            document.getElementById('view-text').textContent = '復号に失敗しました: ' + err.message;
+        }
+    }
+
+    async function deleteEntry() {
+        if (currentEntryId === null) return;
+        if (!confirm('この日記を削除しますか？')) return;
+
+        showLoading('削除中...');
+        try {
+            const entry = diaryIndex.find(e => e.id === currentEntryId);
+            if (entry) entry.deleted = true;
+
+            const indexCid = await saveIndex();
+            const tx = await contract.delete_entries([currentEntryId], indexCid);
+            await tx.wait();
+
+            currentEntryId = null;
+            document.getElementById('entry-view').style.display = 'none';
+            document.getElementById('main-empty').style.display = 'flex';
+            renderEntryList();
+        } catch (err) {
+            console.error('Delete error:', err);
+        }
+        hideLoading();
+    }
+
+    function showLoading(text) {
+        document.getElementById('loading-text').textContent = text;
+        document.getElementById('loading-overlay').style.display = 'flex';
+    }
+
+    function hideLoading() {
+        document.getElementById('loading-overlay').style.display = 'none';
     }
 
     function shortenAddr(addr) {
@@ -400,6 +757,12 @@
         const el = document.getElementById('status');
         el.textContent = msg;
         el.className = type;
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
     }
 </script>
 
