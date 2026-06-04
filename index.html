@@ -1040,11 +1040,11 @@
             );
 
             const entryCount = Number(await contract.entry_count());
-            let tempJwt = await getTempJwt();
             const newIndex = [];
 
             for (let i = 0; i < entryCount; i++) {
                 showLoading('エントリ ' + (i + 1) + '/' + entryCount + ' を再暗号化中...');
+                let tempJwt = await getTempJwt();
 
                 const cid = await contract.entries(i);
                 const isDeleted = await contract.deleted(i);
@@ -1086,10 +1086,6 @@
                     entry_type: oldIndexEntry ? oldIndexEntry.entry_type : 0,
                     deleted: isDeleted
                 });
-
-                if ((i + 1) % 3 === 0 || i === entryCount - 1) {
-                    tempJwt = await getTempJwt();
-                }
             }
 
             showLoading('新しいインデックスをアップロード中...');
@@ -1103,7 +1099,8 @@
             encIdxBlob.set(ivIdx, 0);
             encIdxBlob.set(new Uint8Array(encIdx), 12);
 
-            const newIndexCid = await uploadToPinata(encIdxBlob, 'index.enc', tempJwt);
+            const newIndexJwt = await getTempJwt();
+            const newIndexCid = await uploadToPinata(encIdxBlob, 'index.enc', newIndexJwt);
 
             showLoading('ブロックチェーンを更新中...');
             const tx1 = await contract.update_index(newIndexCid);
