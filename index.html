@@ -217,6 +217,12 @@
             flex: 1; padding: 24px; overflow-y: auto;
         }
 
+        #compose.drag-over {
+            background: #1a1a2a;
+            border: 2px dashed #534AB7;
+            border-radius: 8px;
+        }
+
         #compose-title {
             font-size: 14px; font-weight: 500; color: #e0e0e8;
             margin-bottom: 16px;
@@ -465,6 +471,7 @@
         document.getElementById('app-net').textContent = names[net.chainId.toString()] || 'Chain ' + net.chainId;
 
         contract = new ethers.Contract(CONFIG.contractAddress, ABI, signer);
+        setupDragDrop();
         await loadIndex();
     }
 
@@ -598,6 +605,30 @@
         }
     }
 
+    function setupDragDrop() {
+        const compose = document.getElementById('compose');
+        compose.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            compose.classList.add('drag-over');
+        });
+        compose.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            compose.classList.remove('drag-over');
+        });
+        compose.addEventListener('drop', function(e) {
+            e.preventDefault();
+            compose.classList.remove('drag-over');
+            if (e.dataTransfer.files.length > 0) {
+                const file = e.dataTransfer.files[0];
+                const input = document.getElementById('compose-file');
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                input.files = dt.files;
+                document.getElementById('file-name').textContent = file.name;
+            }
+        });
+    }
+
     async function saveEntry() {
         const text = document.getElementById('compose-text').value.trim();
         if (!text) { document.getElementById('save-status').textContent = 'テキストを入力してください'; return; }
@@ -641,7 +672,8 @@
 
             showLoading('インデックスを更新中...');
             const now = new Date();
-            const dateStr = now.getFullYear() + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0');
+            const days = ['日', '月', '火', '水', '木', '金', '土'];
+            const dateStr = now.getFullYear() + '/' + String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' (' + days[now.getDay()] + ')';
             const entryCount = Number(await contract.entry_count());
 
             diaryIndex.push({
