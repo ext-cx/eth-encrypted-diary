@@ -531,23 +531,35 @@
         return 1;
     }
 
+    let passwordVerified = false;
+
     async function loadIndex() {
         try {
+            const entryCount = Number(await contract.entry_count());
             const indexCid = await contract.index_cid();
-            if (!indexCid) {
+
+            if (entryCount === 0 || !indexCid) {
                 diaryIndex = [];
+                passwordVerified = true;
                 renderEntryList();
                 return;
             }
+
             const encryptedBlob = await fetchFromIPFS(indexCid);
             const decrypted = await decrypt(encryptedBlob);
             const json = new TextDecoder().decode(decrypted);
             diaryIndex = JSON.parse(json);
+            passwordVerified = true;
             renderEntryList();
         } catch (err) {
             console.error('Index load error:', err);
             diaryIndex = [];
+            passwordVerified = false;
             renderEntryList();
+            document.getElementById('main-empty').innerHTML = '<div style="color:#E24B4A;text-align:center;">パスワードが間違っている可能性があります<br><span style="font-size:12px;color:#aeb0c0;">日記が存在しますが復号できませんでした。<br>正しいパスワードで再ログインしてください。</span></div>';
+            document.getElementById('btn-new').disabled = true;
+            document.getElementById('btn-new').style.opacity = '0.4';
+            document.getElementById('btn-new').style.cursor = 'not-allowed';
         }
     }
 
@@ -630,6 +642,7 @@
     }
 
     async function saveEntry() {
+        if (!passwordVerified) { document.getElementById('save-status').textContent = 'パスワードが未検証です'; return; }
         const text = document.getElementById('compose-text').value.trim();
         if (!text) { document.getElementById('save-status').textContent = 'テキストを入力してください'; return; }
 
